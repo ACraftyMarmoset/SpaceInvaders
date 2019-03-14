@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Navigation;
 using SpaceInvaders.Models;
 using System.Diagnostics;
 using Windows.UI.Xaml.Media.Imaging;
+using SpaceInvaders.Entities;
 
 namespace SpaceInvaders
 {
@@ -52,10 +53,43 @@ namespace SpaceInvaders
             Delta = Timer.Elapsed.TotalSeconds;
             Timer.Restart();
 
-            foreach (var entity in Model.Entities)
+            for (int i = 0; i < Model.Entities.Count; i++)
             {
+                var entity = Model.Entities[i];
                 entity.Update(Delta);
             }
+
+            foreach (var bullet in Model.Entities.Where(x => x.Tag == Bullet.BULLET_TAG))
+            {
+                foreach (var target in Model.Entities.Where(x => x.Tag == Enemy.ENEMY_TAG))
+                {
+                    if (bullet.Hitbox.Intersects(target.Hitbox))
+                    {
+                        bullet.Alive = false;
+                        target.Alive = false;
+                        Model.Score += ((Enemy) target).ScoreValue;
+                        GUI_Score.Text = $"{Model.Score}";
+                        break;
+                    }
+                }
+            }
+
+            foreach (var missile in Model.Entities.Where(x => x.Tag == Missile.MISSILE_TAG))
+            {
+                if (missile.Hitbox.Intersects(Model.PlayerCharacter.Hitbox))
+                {
+                    missile.Alive = false;
+                    Model.PlayerCharacter.Damage();
+                    GUI_Health.Text = Model.PlayerCharacter.HealthString;
+                }
+            }
+
+            foreach (var entity in Model.Entities.Where(x => !x.Alive))
+            {
+                GameBoard.Children.Remove(entity.Sprite);
+            }
+            Model.Entities.RemoveAll(x => !x.Alive);
+
             Render();
         }
 

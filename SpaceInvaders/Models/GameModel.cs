@@ -12,6 +12,9 @@ namespace SpaceInvaders.Models
 {
     public class GameModel
     {
+        public const double CANVAS_WIDTH = 600;
+        public const double CANVAS_HEIGHT = 400;
+
         const double PLAYER_START_X = 2;
         const double PLAYER_START_Y = 6;
         const double ENEMY_SPEED_BASE = 30;
@@ -49,13 +52,9 @@ namespace SpaceInvaders.Models
                     x = GameWidth / (ENEMY_COLUMNS * 4);
                     y += GameHeight / ENEMY_ROWS;
                 }
-                var sprite_values = Enum.GetValues(typeof(Enemy.EnemyType));
+                var sprite_values = Enum.GetValues(typeof(Enemy.EnemyEnum));
                 var sprite = Game.Rng.Next(sprite_values.Length);
-                Entities.Add(new Enemy(new Point(x, y), (Enemy.EnemyType) sprite, ENEMY_SPEED_BASE * (difficulty + 1), difficulty));
-            }
-            foreach (var entity in Entities)
-            {
-                Debug.WriteLine($"Entity: {entity} ({entity.Position.X}, {entity.Position.Y})");
+                Entities.Add(new Enemy(new Point(x, y), (Enemy.EnemyEnum) sprite, ENEMY_SPEED_BASE * (difficulty + 1), difficulty));
             }
         }
 

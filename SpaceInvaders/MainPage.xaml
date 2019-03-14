@@ -24,18 +24,19 @@
         </Viewbox>
         <Grid Grid.Row="1" Grid.Column="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Viewbox Grid.Row="0" Grid.Column="0">
-                <TextBlock Text="{Binding PlayerCharacter.HealthString}"/>
+                <TextBlock Name="GUI_Health" Text="{Binding PlayerCharacter.HealthString, Mode=OneTime}"
+                           HorizontalAlignment="Left"/>
             </Viewbox>
             <Viewbox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right">
                 <TextBlock Text="Score:"/>
             </Viewbox>
             <Viewbox Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center">
-                <TextBlock Text="{Binding Score}"/>
+                <TextBlock Name="GUI_Score" Text="{Binding Score, Mode=OneTime}"/>
             </Viewbox>
         </Grid>
     </Grid>
